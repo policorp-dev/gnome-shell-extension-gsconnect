@@ -1,0 +1,185 @@
+#!/bin/python3 -x
+## Dependencias gir1.2-webkit2-4.1 libwebkit2gtk-4.1-dev
+import gi
+import json
+import os
+import threading
+import time  # Importação corrigida
+import subprocess
+from threading import Thread
+
+gi.require_version('Gtk', '3.0')
+gi.require_version('WebKit2', '4.1')
+from gi.repository import Gtk, WebKit2, Gio, GLib  # GLib importado corretamente
+
+class WebKitApp(Gtk.Window):
+    def __init__(self):
+        super().__init__(title='GSConnect On/Off')
+        self.set_default_size(800, 700)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        # Criando a WebView
+        self.webview = WebKit2.WebView()
+        self.load_html_file()
+        self.webview.connect("load-changed", self.on_load_changed)
+
+        self.add(self.webview)
+        self.show_all()
+        
+        # Criando a instância de Gio.Settings
+        self.settings = Gio.Settings.new("org.gnome.desktop.interface")
+        self.settings.connect("changed", self.on_settings_changed)
+        
+        thread = threading.Thread(target=self.threading_detect_system_theme)
+        thread.start()
+        self.connect("destroy", self.on_destroy)
+        
+
+    def load_html_file(self):
+        html_path = os.path.abspath("/var/opt/policorp-gsconnect/index.html")
+        self.webview.load_uri(f"file://{html_path}")
+
+    def on_load_changed(self, webview, event):
+        if event == WebKit2.LoadEvent.FINISHED:
+            manager = self.webview.get_user_content_manager()
+            manager.register_script_message_handler("external")
+            manager.connect("script-message-received::external", self.on_message_received)
+            extension_habilitada = self.extension_enable()
+            if extension_habilitada == 0:
+                self.enable_switch()  # Força o switch para 'ON' assim que a página carregar
+                js_code = """
+                document.getElementById('status').textContent = "Clique para abrir a extensão:";
+                """
+                self.run_javascript(js_code)
+
+    def run_javascript(self, script):
+        """Executa JavaScript na WebView."""
+        GLib.idle_add(self._run_javascript, script)
+
+    def _run_javascript(self, script):
+        """Corrigindo chamada para a WebView correta"""
+        # Exemplo de chamada ao método mais moderno
+        self.webview.run_javascript(script)
+        return GLib.SOURCE_REMOVE
+        
+    def show_error_dialog(self, message):
+        dialog = Gtk.MessageDialog(
+            self,
+            0,
+            Gtk.MessageType.ERROR,
+            Gtk.ButtonsType.CLOSE,
+            "Erro",
+        )
+        dialog.format_secondary_text(message)
+
+        # Centraliza a caixa de diálogo sobre a janela principal
+        dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
+        
+        dialog.run()
+        dialog.destroy()
+
+    def on_message_received(self, manager, message):
+        state = message.get_js_value().to_string()
+        extension_habilitada = self.extension_enable()
+        if state == "image_clicked" and extension_habilitada == 0:
+            command = "gnome-extensions  prefs gsconnect@andyholmes.github.io"
+            # Executa o comando e verifica se houve erro
+            try:
+                result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
+                print("Comando executado com sucesso!")
+                print(result.stdout)  # Exibe a saída do comando, se necessário
+                time.sleep(3)
+                Gtk.main_quit()  # Encerra o loop principal
+                os._exit(0)  # Força o encerramento do processo
+            except subprocess.CalledProcessError as e:
+                print(f"Erro ao executar o comando: {e}")
+                error_message = f"Erro ao executar o comando: {e}\nCódigo de retorno: {e.returncode}\n"
+                print(error_message)  # Exibe no terminal
+                self.show_error_dialog(error_message)  # Exibe a janela de erro GTK
+        elif state == "ON":
+            command = "gnome-extensions enable gsconnect@andyholmes.github.io"
+            result = subprocess.run(command, shell=True, capture_output=True, text=True)        
+            print(f"Toggle Switch State: {state}")
+            if self.lang_pt():
+                js_code = """
+                    document.getElementById('status').textContent = "Clique para abrir a extensão:";
+                    """
+            else:
+                js_code = """
+                document.getElementById('status').textContent = "Click to open the extension:";
+                """
+            self.run_javascript(js_code)
+        elif state == "OFF":
+            command = "gnome-extensions disable gsconnect@andyholmes.github.io"
+            result = subprocess.run(command, shell=True, capture_output=True, text=True)        
+            print(f"Toggle Switch State: {state}")
+            if self.lang_pt():
+                js_code = """
+                    document.getElementById('status').textContent = "Habilite para abrir a extensão:";
+                    """
+            else:
+                 js_code = """
+                    document.getElementById('status').textContent = "Enable to open the extension:";
+                    """
+            self.run_javascript(js_code)    
+    
+    def extension_enable(self):
+        command = "gnome-extensions list --enabled | grep gsconnect"
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        return result.returncode
+
+    def enable_switch(self):
+        """Força o switch para 'ON' via JavaScript"""
+        js_code = """
+        document.getElementById('toggleSwitch').checked = true;
+        document.getElementById('toggleImage').classList.add("active");
+        """
+        self.run_javascript(js_code)
+
+    def detect_system_theme(self):
+        """Detecta o tema do sistema e chama a função handle_theme_change"""
+        theme = self.settings.get_string("color-scheme")
+        if theme == "default":
+            Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", False)
+        elif theme == "prefer-dark":
+            Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
+            self.handle_theme_change()
+        else:
+            Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", False)
+
+    def threading_detect_system_theme(self):
+        """Thread para verificar o tema do sistema"""
+        time.sleep(0.8)  # Agora 'time' está corretamente importado
+        theme = self.settings.get_string("color-scheme")
+        if theme == "default":
+            return
+        else:
+            self.detect_system_theme()
+
+
+    def handle_theme_change(self):
+        """Executa o clique no botão de alternância de tema via JavaScript"""
+        js_code = "document.getElementById('theme-toggle').click();"
+        self.run_javascript(js_code)
+
+    def on_settings_changed(self, settings, key):
+        if key == "color-scheme":
+            self.handle_theme_change()
+            new_theme = settings.get_string(key)
+            if new_theme == "default":
+                Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", False)
+            elif new_theme == "prefer-dark":
+                Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", True)
+
+    def on_destroy(self, widget):
+        Gtk.main_quit()  # Encerra o loop principal
+        os._exit(0)  # Força o encerramento do processo
+
+    def lang_pt(self):
+        lang = os.environ.get('LANG', 'en_US')
+        language_code = lang.split('.')[0]
+        return language_code == "pt_BR"
+
+if __name__ == "__main__":
+    app = WebKitApp()
+    Gtk.main()
+

@@ -1,0 +1,136 @@
+   body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+        background-color: #f4f4f4;
+        color: #333;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+        background-color: #1e1e1e;
+        color: #f4f4f4;
+    }
+    h2 {
+        margin-bottom: 20px;
+        color: #35424a;
+    }
+    body.dark-mode h2 {
+        color: #ddd;
+    }
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    #theme-toggle {
+        margin: 10px;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        background-color: #2196F3;
+        color: white;
+        border-radius: 5px;
+    }
+    body.dark-mode #theme-toggle {
+        background-color: #444;
+    }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc; /* Cor do switch OFF */
+            transition: .4s;
+            border-radius: 34px; /* Bordas arredondadas */
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white; /* Cor do botão do switch */
+            transition: .4s;
+            border-radius: 50%; /* Botão arredondado */
+        }
+        input:checked + .slider {
+            background-color: #2196F3; /* Cor do switch ON */
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px); /* Movimento do botão */
+        }
+        .image-container {
+            margin-top: 20px;
+        }
+        .image-container img {
+            width: 380px;
+            height: 355px;
+            opacity: 0.3; /* Opacidade padrão */
+            cursor: default;
+            transition: opacity 0.3s; /* Transição suave */
+            border-radius: 10px; /* Bordas arredondadas na imagem */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra na imagem */
+        }
+        .image-container img.active {
+            opacity: 1; /* Opacidade quando ativo */
+            cursor: pointer; /* Cursor de ponteiro quando ativo */
+        }
+        #status {
+            font-size: 1.2em; /* Tamanho do texto do status */
+            margin-top: 10px;
+            color: #555; /* Cor do texto do status */
+        }
+	/* Animação de clique */
+	@keyframes clickEffect {
+    	0% {
+        	transform: scale(1);
+    	}
+    	50% {
+        	transform: scale(1.1);  /* Aumenta ligeiramente o tamanho */
+    	}
+    	100% {
+        	transform: scale(1);
+    	}
+	}
+
+	/* Aplicando a animação quando a imagem for clicada */
+	#toggleImage.clicked {
+    		animation: clickEffect 0.3s ease-out !important;  /* A animação dura 0.3 segundos */
+	}
+
+    h2, #status {
+        color: #35424a;
+    }
+    
+    body.dark-mode h2, body.dark-mode #status {
+        color: #ddd; /* Cor para o modo escuro */
+    }
+    /* Animação simples no clique */
+#toggleImage:active {
+    animation: clickEffect 0.3s ease-out !important;  /* A animação dura 0.3 segundos */
+}
+
+

@@ -1,3 +1,5 @@
 usr/lib/firewalld
 usr/share/[a-hj-z]*
 usr/share/icons
+data/policorp-gsconnect/	/var/opt/
+data/policorp-gsconnect-desktop/* /usr/share/applications/
