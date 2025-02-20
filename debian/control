@@ -1,0 +1,64 @@
+Source: gnome-shell-extension-gsconnect
+Section: gnome
+Priority: optional
+Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
+Uploaders: Jeremy Bícha <jbicha@ubuntu.com>
+Build-Depends: debhelper-compat (= 13),
+               appstream <!nocheck>,
+               desktop-file-utils <!nocheck>,
+               gtk-update-icon-cache,
+               libglib2.0-dev,
+               libxml2-utils,
+               meson (>= 0.46.0),
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+Homepage: https://github.com/andyholmes/gnome-shell-extension-gsconnect
+Vcs-Git: https://salsa.debian.org/gnome-team/shell-extensions/gnome-shell-extension-gsconnect.git
+Vcs-Browser: https://salsa.debian.org/gnome-team/shell-extensions/gnome-shell-extension-gsconnect
+
+Package: gnome-shell-extension-gsconnect
+Architecture: all
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         python3,
+         gjs,
+         gnome-shell (>= 45),
+         gnome-shell (<< 48~),
+         gir1.2-gdkpixbuf-2.0,
+         gir1.2-glib-2.0,
+         gir1.2-gtk-3.0,
+         libglib2.0-bin,
+Recommends: sshfs,
+            libfolks-eds26,
+            python3-nautilus,
+            gir1.2-atspi-2.0,
+            gir1.2-gdata-0.0,
+            gir1.2-folks-0.7,
+            gir1.2-goa-1.0,
+            gir1.2-pango-1.0,
+            gir1.2-gsound-1.0,
+            gir1.2-upowerglib-1.0,
+Suggests: gnome-shell-extension-gsconnect-browsers
+Description: KDE Connect implementation for GNOME Shell
+ This extension enables you to connect your phone or other devices to your
+ system, sending remote sms, see phone calls, share notifications, send files.
+ .
+ To connect an Android device, install the KDE Connect Android app from
+ the Google Play Store or F-Droid.
+ .
+ GSConnect is a complete KDE Connect protocol implementation for GNOME Shell
+ with Nautilus, contacts and Shell integration.
+
+Package: gnome-shell-extension-gsconnect-browsers
+Architecture: all
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         gnome-shell-extension-gsconnect (= ${binary:Version}),
+Suggests: firefox-esr | firefox | chromium-browser | chromium
+Enhances: gnome-shell-extension-gsconnect
+Description: Browser support of KDE Connect implementation for GNOME Shell
+ This extension enables you to connect your phone or other devices to your
+ system, sending remote sms, see phone calls, share notifications, send files.
+ .
+ This package contains Chromium, Firefox and Chrome integration support to send
+ text via sms or open links on your phone.
