@@ -1,0 +1,124 @@
+Index: gnome-shell-extension-gsconnect/data/org.gnome.Shell.Extensions.GSConnect.gresource.xml
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/data/org.gnome.Shell.Extensions.GSConnect.gresource.xml
++++ gnome-shell-extension-gsconnect/data/org.gnome.Shell.Extensions.GSConnect.gresource.xml
+@@ -72,7 +72,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+     <!-- WebExtension Manifests & Badges -->
+     <file compressed="true">webextension/org.gnome.shell.extensions.gsconnect.json.google.in</file>
+     <file compressed="true">webextension/org.gnome.shell.extensions.gsconnect.json.mozilla.in</file>
+-    <file compressed="true">images/chrome-badge.png</file>
+-    <file compressed="true">images/firefox-badge.png</file>
++    <file compressed="true">images/app-store.png</file>
++    <file compressed="true">images/google-play.png</file>
+   </gresource>
+ </gresources>
+Index: gnome-shell-extension-gsconnect/data/ui/preferences-window.ui
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/data/ui/preferences-window.ui
++++ gnome-shell-extension-gsconnect/data/ui/preferences-window.ui
+@@ -436,14 +436,14 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                                 <property name="receives_default">True</property>
+                                 <property name="halign">center</property>
+                                 <property name="valign">center</property>
+-                                <property name="uri">https://addons.mozilla.org/firefox/addon/gsconnect/</property>
++                                <property name="uri">https://play.google.com/store/apps/details?id=org.kde.kdeconnect_tp</property>
+                                 <child>
+                                   <object class="GtkImage" id="webextension-image-firefox">
+                                     <property name="width_request">172</property>
+                                     <property name="height_request">60</property>
+                                     <property name="visible">True</property>
+                                     <property name="can_focus">False</property>
+-                                    <property name="resource">/org/gnome/Shell/Extensions/GSConnect/images/firefox-badge.png</property>
++                                    <property name="resource">/org/gnome/Shell/Extensions/GSConnect/images/google-play.png</property>
+                                   </object>
+                                 </child>
+                                 <child internal-child="accessible">
+@@ -469,14 +469,14 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                                 <property name="receives_default">True</property>
+                                 <property name="halign">center</property>
+                                 <property name="valign">center</property>
+-                                <property name="uri">https://chrome.google.com/webstore/detail/gsconnect/jfnifeihccihocjbfcfhicmmgpjicaec</property>
++                                <property name="uri">https://apps.apple.com/us/app/kde-connect/id1580245991</property>
+                                 <child>
+                                   <object class="GtkImage" id="webextension-image-chrome">
+                                     <property name="width_request">206</property>
+                                     <property name="height_request">58</property>
+                                     <property name="visible">True</property>
+                                     <property name="can_focus">False</property>
+-                                    <property name="resource">/org/gnome/Shell/Extensions/GSConnect/images/chrome-badge.png</property>
++                                    <property name="resource">/org/gnome/Shell/Extensions/GSConnect/images/app-store.png</property>
+                                   </object>
+                                 </child>
+                                 <child internal-child="accessible">
+@@ -512,7 +512,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                         </child>
+                         <child>
+                           <object class="GtkLabel" id="kdeconnect-label">
+-                            <property name="visible">True</property>
++                            <property name="visible">False</property>
+                             <property name="can_focus">False</property>
+                             <property name="halign">start</property>
+                             <property name="valign">center</property>
+@@ -540,7 +540,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             <property name="column_spacing">6</property>
+                             <child>
+                               <object class="GtkLabel" id="kdeconnect-android">
+-                                <property name="visible">True</property>
++                                <property name="visible">False</property>
+                                 <property name="can_focus">False</property>
+                                 <property name="halign">end</property>
+                                 <property name="label">Android:</property>
+@@ -557,7 +557,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             <child>
+                               <object class="GtkLinkButton" id="kdeconnect-playstore">
+                                 <property name="label">Play Store</property>
+-                                <property name="visible">True</property>
++                                <property name="visible">False</property>
+                                 <property name="can_focus">True</property>
+                                 <property name="receives_default">True</property>
+                                 <property name="halign">start</property>
+@@ -580,7 +580,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             <child>
+                               <object class="GtkLinkButton" id="kdeconnect-fdroid">
+                                 <property name="label">F-Droid</property>
+-                                <property name="visible">True</property>
++                                <property name="visible">False</property>
+                                 <property name="can_focus">True</property>
+                                 <property name="receives_default">True</property>
+                                 <property name="halign">start</property>
+@@ -603,7 +603,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             <child>
+                               <object class="GtkLinkButton" id="kdeconnect-openrepos">
+                                 <property name="label">OpenRepos</property>
+-                                <property name="visible">True</property>
++                                <property name="visible">False</property>
+                                 <property name="can_focus">True</property>
+                                 <property name="receives_default">True</property>
+                                 <property name="halign">start</property>
+@@ -625,7 +625,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             </child>
+                             <child>
+                               <object class="GtkLabel" id="kdeconnect-sailfish">
+-                                <property name="visible">True</property>
++                                <property name="visible">False</property>
+                                 <property name="can_focus">False</property>
+                                 <property name="halign">end</property>
+                                 <property name="label">Sailfish OS:</property>
+@@ -640,7 +640,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             </child>
+                             <child>
+                               <object class="GtkLabel" id="kdeconnect-ios">
+-                                <property name="visible">True</property>
++                                <property name="visible">False</property>
+                                 <property name="can_focus">False</property>
+                                 <property name="halign">end</property>
+                                 <property name="label">iOS:</property>
+@@ -656,7 +656,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             <child>
+                               <object class="GtkLinkButton" id="kdeconnect-appstore">
+                                 <property name="label">App Store</property>
+-                                <property name="visible">True</property>
++                                <property name="visible">False</property>
+                                 <property name="can_focus">True</property>
+                                 <property name="receives_default">True</property>
+                                 <property name="halign">start</property>

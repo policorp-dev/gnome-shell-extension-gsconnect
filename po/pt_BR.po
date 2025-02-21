@@ -509,7 +509,7 @@ msgstr "O GSConnect continua ativo enquanto o GNOME Shell estiver bloqueado"
 
 #: data/ui/preferences-window.ui:410
 msgid "Browser Add-Ons"
-msgstr "Complementos para navegadores"
+msgstr "Baixe o KDE Connect para começar a usar:"
 
 #: data/ui/preferences-window.ui:728
 msgid "Enable"
