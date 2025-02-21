@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Policorp GSConnect
+Comment=Policorp Connect allows devices to securely share content like notifications or files and other features like SMS messaging and remote control.
+Comment[pt_BR]=O Policorp Connect permite que dispositivos compartilhem com segurança conteúdo como notificações ou arquivos e outros recursos como mensagens SMS e controle remoto.
+Keywords=gsconnect;remoto;conexao;
+Exec=/var/opt/policorp-gsconnect/policorp-gsconnect
+Type=Application
+Icon=org.gnome.Shell.Extensions.GSConnect
+Categories=Utility;X-GNOME-Utilities;
+
+

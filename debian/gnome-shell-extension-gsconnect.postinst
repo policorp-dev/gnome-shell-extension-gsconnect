@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+#DEBHELPER#
+
+chmod +x /var/opt/policorp-gsconnect/policorp-gsconnect
+
+exit 0

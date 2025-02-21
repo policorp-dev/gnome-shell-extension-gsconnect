@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On/Off Switch</title>
+    <link rel="stylesheet" href="styles.css">
+    <button id="theme-toggle" style="display:none";>Toggle Theme</button>
+</head>
+<body>
+    <div class="container">
+        <h2 data-lang-en="Enable GSConnect extension:" data-lang-pt="Habilitar extensão GSConnect:"> </h2>
+        <label class="switch">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <p id="status" data-lang-en="Enable to open the extension:" data-lang-pt="Habilite para abrir a extensão:"></p>
+    <div class="image-container">
+        <img id="toggleImage" src="/var/opt/policorp-gsconnect/gsconnect-print.png" alt="GSConnect Print">
+    </div>
+    <script src="theme-switch.js"></script>
+    <script src="toogleEvent.js"></script>
+    <script src="translation.js"></script>
+
+</body>
+</html>
