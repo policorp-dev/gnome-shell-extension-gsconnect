@@ -1,0 +1,82 @@
+Index: gnome-shell-extension-gsconnect/data/metadata.json.in
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/data/metadata.json.in
++++ gnome-shell-extension-gsconnect/data/metadata.json.in
+@@ -4,5 +4,6 @@
+     "description": "GSConnect is a complete implementation of KDE Connect especially for GNOME Shell with Nautilus, Chrome and Firefox integration. It does not rely on the KDE Connect desktop application and will not work with it installed.\n\nKDE Connect allows devices to securely share content like notifications or files and other features like SMS messaging and remote control. The KDE Connect team has applications for Linux, BSD, Android, Sailfish, iOS, macOS and Windows.\n\nPlease report issues on Github!",
+     "version": @PACKAGE_VERSION@,
+     "shell-version": [ "46", "47" ],
+-    "url": "@PACKAGE_URL@/wiki"
++    "url": "@PACKAGE_URL@/wiki",
++    "settings-schema": "org.gnome.Shell.Extensions.GSConnect"
+ }
+Index: gnome-shell-extension-gsconnect/data/org.gnome.Shell.Extensions.GSConnect.gschema.xml
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/data/org.gnome.Shell.Extensions.GSConnect.gschema.xml
++++ gnome-shell-extension-gsconnect/data/org.gnome.Shell.Extensions.GSConnect.gschema.xml
+@@ -38,6 +38,12 @@ SPDX-License-Identifier: GPL-2.0-or-late
+     <key name="discoverable" type="b">
+       <default>true</default>
+     </key>
++    <key type="as" name="shortcut-gsconnect">
++      <default><![CDATA[['XF86Launch1']]]></default>
++      <summary>Atalho para abrir gsconnect</summary>
++      <description>Configuração do atalho de teclado para abrir o gsconnect.</description>
++    </key>
++
+   </schema>
+ 
+   <!-- Window Geometry -->
+Index: gnome-shell-extension-gsconnect/src/extension.js
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/src/extension.js
++++ gnome-shell-extension-gsconnect/src/extension.js
+@@ -8,6 +8,9 @@ import GObject from 'gi://GObject';
+ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+ import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js';
++import Meta from 'gi://Meta';
++import Shell from 'gi://Shell'; // Importação adicionada
++import {trySpawnCommandLine} from 'resource:///org/gnome/shell/misc/util.js';
+ 
+ // Bootstrap
+ import {
+@@ -384,6 +387,8 @@ export default class GSConnectExtension
+         // This watches for the service to start and exports a custom clipboard
+         // portal for use on Wayland
+         Clipboard.watchService();
++	this._keybindingId = 'shortcut-gsconnect';
++
+     }
+ 
+     enable() {
+@@ -392,6 +397,20 @@ export default class GSConnectExtension
+ 
+         this.lockscreenInput = new Input.LockscreenRemoteAccess();
+         this.lockscreenInput.patchInhibitor();
++	    
++	this._settings = this.getSettings();
++	const userExecutable = 'gnome-extensions  prefs gsconnect@andyholmes.github.io';
++
++        Main.wm.addKeybinding(
++             this._keybindingId,
++             this._settings,
++             Meta.KeyBindingFlags.NONE,
++             Shell.ActionMode.NORMAL, // Modo corrigido
++             () => {
++                 trySpawnCommandLine(userExecutable);
++                 log('[GSConnect] Shortcut activated');
++             }
++         );
+     }
+ 
+     disable() {
+@@ -403,5 +422,8 @@ export default class GSConnectExtension
+             this.lockscreenInput.unpatchInhibitor();
+             this.lockscreenInput = null;
+         }
++	Main.wm.removeKeybinding(this._keybindingId);
++	this._settings = null;
++
+     }
+ }
