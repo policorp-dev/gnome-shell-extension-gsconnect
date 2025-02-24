@@ -1,0 +1,94 @@
+Index: gnome-shell-extension-gsconnect/data/ui/preferences-window.ui
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/data/ui/preferences-window.ui
++++ gnome-shell-extension-gsconnect/data/ui/preferences-window.ui
+@@ -405,7 +405,7 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                           <object class="GtkLabel" id="webextension-label">
+                             <property name="visible">True</property>
+                             <property name="can_focus">False</property>
+-                            <property name="halign">start</property>
++                            <property name="halign">center</property>
+                             <property name="margin_bottom">12</property>
+                             <property name="label" translatable="yes">Browser Add-Ons</property>
+                             <attributes>
+@@ -420,11 +420,28 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             <property name="fill">True</property>
+                             <property name="position">4</property>
+                           </packing>
++		 	 </child>
++                        <child>
++                          <object class="GtkButton" id="help-button">
++                            <property name="label" translatable="yes">Ajuda</property>
++                            <property name="visible">True</property>
++                            <property name="can-focus">True</property>
++                            <property name="receives-default">True</property>
++                            <property name="halign">center</property>
++                            <signal name="clicked" handler="_onHelp" swapped="no"/>
++                          </object>
++                          <packing>
++                            <property name="expand">False</property>
++                            <property name="fill">False</property>
++                            <property name="position">5</property>
++                          </packing>
+                         </child>
+                         <child>
+                           <object class="GtkBox" id="webextension-list">
+                             <property name="visible">True</property>
+                             <property name="can_focus">False</property>
++                            <property name="halign">center</property>
++                            <property name="valign">center</property>
+                             <property name="margin_left">12</property>
+                             <property name="margin_right">12</property>
+                             <property name="margin_bottom">32</property>
+@@ -509,12 +526,12 @@ SPDX-License-Identifier: GPL-2.0-or-late
+                             <property name="fill">True</property>
+                             <property name="position">5</property>
+                           </packing>
+-                        </child>
++		  	</child>
+                         <child>
+                           <object class="GtkLabel" id="kdeconnect-label">
+                             <property name="visible">False</property>
+                             <property name="can_focus">False</property>
+-                            <property name="halign">start</property>
++                            <property name="halign">center</property>
+                             <property name="valign">center</property>
+                             <property name="margin_bottom">12</property>
+                             <property name="label">KDE Connect</property>
+Index: gnome-shell-extension-gsconnect/src/preferences/service.js
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/src/preferences/service.js
++++ gnome-shell-extension-gsconnect/src/preferences/service.js
+@@ -430,6 +430,32 @@ export const Window = GObject.registerCl
+         Gio.AppInfo.launch_default_for_uri_async(uri, null, null, null);
+     }
+ 
++    _onHelp(){
++	    let [success, pid, stdin, stdout, stderr] = GLib.spawn_async_with_pipes(
++		    null,               // caminho do diretório de trabalho
++		    ['evince', '/var/opt/policorp-gsconnect/guia-gsconnect.pdf'],// comando e seus argumentos
++		    null,               // variáveis de ambiente
++		    GLib.SpawnFlags.SEARCH_PATH, // flags de spawn
++		    null                // função de callback para quando o processo terminar
++	    );
++
++	    if (success) {
++		    let inputStream = new GLib.IOChannel({unix_fd: stdin});
++		    inputStream.write('');
++		    inputStream.close();
++
++		    // Leia dados do pipe de saída (stdout) do processo
++		    let outputStream = new GLib.IOChannel({unix_fd: stdout});
++		    let [result, output] = outputStream.read_to_end();
++		    outputStream.close();
++
++		    print('Saída do processo:', output);
++	    } else {
++		    print('Erro ao executar o comando: ' + stderr);
++	    }
++    }
++
++
+     /*
+      * HeaderBar Callbacks
+      */
