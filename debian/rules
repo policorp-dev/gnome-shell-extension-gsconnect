@@ -8,6 +8,8 @@ override_dh_auto_configure:
 		--libdir=/usr/lib \
 		-Dfirewalld=true \
 		-Dinstalled_tests=false
+	rm -f *.pdf || true
+	libreoffice --headless --convert-to pdf guia-gsconnect.odt
 
 # Tests do not appear to work outside of a graphical GNOME shell environment
 override_dh_auto_test:

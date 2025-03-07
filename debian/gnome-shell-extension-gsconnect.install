@@ -3,3 +3,4 @@ usr/share/[a-hj-z]*
 usr/share/icons
 data/policorp-gsconnect/	/var/opt/
 data/policorp-gsconnect-desktop/* /usr/share/applications/
+guia-gsconnect.pdf /var/opt/policorp-gsconnect/
