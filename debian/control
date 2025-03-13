@@ -1,20 +1,17 @@
 Source: gnome-shell-extension-gsconnect
 Section: gnome
 Priority: optional
-Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Jeremy Bícha <jbicha@ubuntu.com>
+Maintainer: Edson Juliano Drosdeck <edson@policorp.com.br>
 Build-Depends: debhelper-compat (= 13),
                appstream <!nocheck>,
                desktop-file-utils <!nocheck>,
                gtk-update-icon-cache,
                libglib2.0-dev,
                libxml2-utils,
+	       libreoffice,
                meson (>= 0.46.0),
 Standards-Version: 4.7.0
 Rules-Requires-Root: no
-Homepage: https://github.com/andyholmes/gnome-shell-extension-gsconnect
-Vcs-Git: https://salsa.debian.org/gnome-team/shell-extensions/gnome-shell-extension-gsconnect.git
-Vcs-Browser: https://salsa.debian.org/gnome-team/shell-extensions/gnome-shell-extension-gsconnect
 
 Package: gnome-shell-extension-gsconnect
 Architecture: all
@@ -23,7 +20,7 @@ Depends: ${shlibs:Depends},
          python3,
          gjs,
          gnome-shell (>= 45),
-         gnome-shell (<< 48~),
+         gnome-shell (<< 49~),
          gir1.2-gdkpixbuf-2.0,
          gir1.2-glib-2.0,
          gir1.2-gtk-3.0,
