@@ -112,6 +112,7 @@ msgstr "Nenhum contato"
 
 #: data/ui/contact-chooser.ui:68 data/ui/messaging-window.ui:103
 #: data/ui/mousepad-input-dialog.ui:56 data/ui/preferences-window.ui:847
+#: data/ui/preferences-window.ui:426
 msgid "Help"
 msgstr "Ajuda"
 

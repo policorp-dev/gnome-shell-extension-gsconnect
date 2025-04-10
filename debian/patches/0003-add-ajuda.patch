@@ -9,7 +9,7 @@ Index: gnome-shell-extension-gsconnect/data/ui/preferences-window.ui
 -                            <property name="halign">start</property>
 +                            <property name="halign">center</property>
                              <property name="margin_bottom">12</property>
-                             <property name="label" translatable="yes">Browser Add-Ons</property>
+                             <property name="label" translatable="yes">Download KDE Connect to start using:</property>
                              <attributes>
 @@ -420,11 +420,28 @@ SPDX-License-Identifier: GPL-2.0-or-late
                              <property name="fill">True</property>
@@ -18,7 +18,7 @@ Index: gnome-shell-extension-gsconnect/data/ui/preferences-window.ui
 +		 	 </child>
 +                        <child>
 +                          <object class="GtkButton" id="help-button">
-+                            <property name="label" translatable="yes">Ajuda</property>
++                            <property name="label" translatable="yes">Help</property>
 +                            <property name="visible">True</property>
 +                            <property name="can-focus">True</property>
 +                            <property name="receives-default">True</property>
@@ -59,33 +59,42 @@ Index: gnome-shell-extension-gsconnect/src/preferences/service.js
 ===================================================================
 --- gnome-shell-extension-gsconnect.orig/src/preferences/service.js
 +++ gnome-shell-extension-gsconnect/src/preferences/service.js
-@@ -430,6 +430,32 @@ export const Window = GObject.registerCl
+@@ -430,6 +430,41 @@ export const Window = GObject.registerCl
          Gio.AppInfo.launch_default_for_uri_async(uri, null, null, null);
      }
  
 +    _onHelp(){
-+	    let [success, pid, stdin, stdout, stderr] = GLib.spawn_async_with_pipes(
-+		    null,               // caminho do diretório de trabalho
-+		    ['evince', '/var/opt/policorp-gsconnect/guia-gsconnect.pdf'],// comando e seus argumentos
-+		    null,               // variáveis de ambiente
-+		    GLib.SpawnFlags.SEARCH_PATH, // flags de spawn
-+		    null                // função de callback para quando o processo terminar
-+	    );
++	// Verifica o idioma do sistema
++	let lang = GLib.getenv('LANG') || '';
++	let isPortuguese = lang.includes('pt_BR');
 +
-+	    if (success) {
-+		    let inputStream = new GLib.IOChannel({unix_fd: stdin});
-+		    inputStream.write('');
-+		    inputStream.close();
++	// Define o caminho do PDF baseado no idioma
++	let pdfPath = isPortuguese
++    		? '/var/opt/policorp-gsconnect/guia-gsconnect.pdf'
++    		: '/var/opt/policorp-gsconnect/guia-gsconnect-en.pdf';
 +
-+		    // Leia dados do pipe de saída (stdout) do processo
-+		    let outputStream = new GLib.IOChannel({unix_fd: stdout});
-+		    let [result, output] = outputStream.read_to_end();
-+		    outputStream.close();
++	let [success, pid, stdin, stdout, stderr] = GLib.spawn_async_with_pipes(
++    	    null,               // caminho do diretório de trabalho
++    	    ['evince', pdfPath], // comando e seus argumentos (usando a variável)
++    	    null,               // variáveis de ambiente
++    	    GLib.SpawnFlags.SEARCH_PATH, // flags de spawn
++    	    null                // função de callback para quando o processo terminar
++	);
 +
-+		    print('Saída do processo:', output);
-+	    } else {
-+		    print('Erro ao executar o comando: ' + stderr);
-+	    }
++	if (success) {
++    		let inputStream = new GLib.IOChannel({unix_fd: stdin});
++   	 	inputStream.write('');
++   	 	inputStream.close();
++
++    		// Leia dados do pipe de saída (stdout) do processo
++    		let outputStream = new GLib.IOChannel({unix_fd: stdout});
++    		let [result, output] = outputStream.read_to_end();
++    		outputStream.close();
++
++    		print('Saída do processo:', output);
++	} else {
++    		print('Erro ao executar o comando: ' + stderr);
++	}
 +    }
 +
 +
