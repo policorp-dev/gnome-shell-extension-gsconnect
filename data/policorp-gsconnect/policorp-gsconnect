@@ -46,10 +46,16 @@ class WebKitApp(Gtk.Window):
             extension_habilitada = self.extension_enable()
             if extension_habilitada == 0:
                 self.enable_switch()  # Força o switch para 'ON' assim que a página carregar
-                js_code = """
-                document.getElementById('status').textContent = "Clique para abrir a extensão:";
-                """
-                self.run_javascript(js_code)
+                if self.lang_pt():
+                    js_code = """
+                    document.getElementById('status').textContent = "Clique para abrir a extensão:";
+                    """
+                else:
+                    js_code = """
+                    document.getElementById('status').textContent = "Enable to open the extension:";
+                    """
+            self.run_javascript(js_code)
+
 
     def run_javascript(self, script):
         """Executa JavaScript na WebView."""
