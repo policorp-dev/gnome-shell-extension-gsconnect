@@ -1,3 +1,9 @@
+gnome-shell-extension-gsconnect (63.Policorp-1) stable; urgency=medium
+
+  * Incrementado versao para instalar Policorp
+
+ -- Edson Juliano Drosdeck <edson@policorp.com.br>  Tue, 01 Jul 2025 16:34:28 +0000
+
 gnome-shell-extension-gsconnect (58.Policorp-5) stable; urgency=medium
 
   * Add manual em ingles
