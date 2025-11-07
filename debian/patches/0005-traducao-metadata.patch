@@ -1,0 +1,13 @@
+Index: gnome-shell-extension-gsconnect/data/metadata.json.in
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/data/metadata.json.in
++++ gnome-shell-extension-gsconnect/data/metadata.json.in
+@@ -1,7 +1,7 @@
+ {
+     "uuid": "gsconnect@andyholmes.github.io",
+     "name": "GSConnect",
+-    "description": "GSConnect is a complete implementation of KDE Connect especially for GNOME Shell with Nautilus, Chrome and Firefox integration. It does not rely on the KDE Connect desktop application and will not work with it installed.\n\nKDE Connect allows devices to securely share content like notifications or files and other features like SMS messaging and remote control. The KDE Connect team has applications for Linux, BSD, Android, Sailfish, iOS, macOS and Windows.\n\nPlease report issues on Github!",
++    "description": "O GSConnect é uma implementação completa do KDE Connect, especialmente para GNOME Shell, com integração com Nautilus, Chrome e Firefox. Ele não depende do aplicativo de desktop KDE Connect e não funcionará com ele instalado.\n\nO KDE Connect permite que dispositivos compartilhem com segurança conteúdo como notificações ou arquivos, além de outros recursos como mensagens SMS e controle remoto. A equipe do KDE Connect possui aplicativos para Linux, BSD, Android, Sailfish, iOS, macOS e Windows.\n\nPor favor, reporte problemas no GitHub!",
+     "version": @PACKAGE_VERSION@,
+     "shell-version": [ "46", "47", "48" ],
+     "url": "@PACKAGE_URL@/wiki",
