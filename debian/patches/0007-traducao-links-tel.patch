@@ -1,13 +1,13 @@
-Index: gnome-shell-extension-gsconnect/src/service/daemon.js
+Index: gnome-shell-extension-gsconnect/data/ui/service-device-chooser.ui
 ===================================================================
---- gnome-shell-extension-gsconnect.orig/src/service/daemon.js
-+++ gnome-shell-extension-gsconnect/src/service/daemon.js
-@@ -277,7 +277,7 @@ const Service = GObject.registerClass({
-                         break;
-
-                     case 'tel':
--                        title = _('Dial Number');
-+                        title = _('Ligar para número');
-                         action = 'shareUri';
-                         parameter = new GLib.Variant('s', file.get_uri().replace(/^tel:\/{0,3}/, 'tel:'));
-                         break;
+--- gnome-shell-extension-gsconnect.orig/data/ui/service-device-chooser.ui
++++ gnome-shell-extension-gsconnect/data/ui/service-device-chooser.ui
+@@ -6,7 +6,7 @@
+ SPDX-License-Identifier: GPL-2.0-or-later
+ -->
+ 
+-<interface>
++<interface domain="org.gnome.Shell.Extensions.GSConnect">
+   <requires lib="gtk+" version="3.24"/>
+   <template class="GSConnectServiceDeviceChooser" parent="GtkDialog">
+     <property name="can_focus">False</property>

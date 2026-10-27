@@ -1,3 +1,9 @@
+gnome-shell-extension-gsconnect (63.Policorp-3) stable; urgency=medium
+
+  * Corrigir links tel e traducao
+
+ -- Vinicius Neves <vinicius.neves@policorp.com.br>  Tue, 27 Oct 2026 11:56:04 -0300
+
 gnome-shell-extension-gsconnect (63.Policorp-2) stable; urgency=medium
 
   * Add tradução do Menu
