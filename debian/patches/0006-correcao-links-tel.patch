@@ -1,0 +1,13 @@
+Index: gnome-shell-extension-gsconnect/src/service/daemon.js
+===================================================================
+--- gnome-shell-extension-gsconnect.orig/src/service/daemon.js
++++ gnome-shell-extension-gsconnect/src/service/daemon.js
+@@ -279,7 +279,7 @@ const Service = GObject.registerClass({
+                     case 'tel':
+                         title = _('Dial Number');
+                         action = 'shareUri';
+-                        parameter = new GLib.Variant('s', file.get_uri());
++                        parameter = new GLib.Variant('s', file.get_uri().replace(/^tel:\/{0,3}/, 'tel:'));
+                         break;
+ 
+                     case 'file':
